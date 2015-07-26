@@ -97,12 +97,12 @@ function getEntitiesForContent(content){
 	if(content){
   	var reqData = {
 	   	apiKey:"0ae1cb4e2f359fcb91c2979640bb3da8d3c469babb7f2953495d520d", 
-	  	extractors:"entities", 
+	  	extractors:"entities,meaning,topics", 
 	  	text:content
 		};
 		console.log('get entities request:', reqData);
 		request.post({url:"http://api.textrazor.com",form:reqData}, function(error, response, body){
-		  // console.log(body, response);
+		  console.log('getEntitiesForContent response:', JSON.parse(body).response);
 		  d.resolve(JSON.parse(body).response.entities);
 		});
   } else {

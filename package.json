@@ -11,7 +11,8 @@
     "mongoose": "^4.1.0",
     "q": "^1.4.1",
     "request": "^2.60.0",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
@@ -26,7 +27,6 @@
     "gulp-s3": "^0.3.0",
     "gulp-strip-debug": "^1.0.2",
     "gulp-strip-ng-log": "^1.1.2",
-    "gulp-template": "^3.0.0",
-    "underscore": "^1.8.3"
+    "gulp-template": "^3.0.0"
   }
 }

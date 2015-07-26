@@ -14,7 +14,7 @@
               <div layout-align="center center" flex="80" layout="row" layout-sm="column">
                 <div layout-align="center center" layout="column" layout-margin ng-repeat="entity in haiku.entities">
                   <md-whiteframe class="md-whiteframe-z1 entity-image-wrapper" layout layout-padding layout-align="center center">
-                    <img class="entity-image" ng-src="{{entity.images[0]}}"/>
+                    <img class="entity-image" ng-src="{{entity.images[0]}}" alt="{{entity.entityId}}"/>
                   </md-whiteframe>
                   <p>{{entity.entityId}}</p>
                 </div>

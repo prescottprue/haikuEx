@@ -111,28 +111,24 @@ angular.module('haikuEx.haiku')
 			},
 			{
 				lines:[
-				"Autumn moonlight—", 
-				"a worm digs silently", 
-				"into the chestnut."
+				"Winter seclusion -", 
+				"Listening, that evening,", 
+				"To the rain in the mountain. "
 				], 
-				sentiment:{confidence:"78", text:"Positive"}
+				sentiment:{confidence:"80", text:"Positive"},
+				entities:[
+					{
+						entityId:"Winter",
+						images:["http://cache2.asset-cache.net/xt/551984935.jpg?v=1&g=fs1|0|CUL|84|935&s=1&b=RjI4"]
+					},
+					{
+						entityId:"Mountain",
+						images:["http://cache2.asset-cache.net/xt/543345753.jpg?v=1&g=fs1|0|ROF|45|753&s=1&b=RjI4", ]
+					}
+				],
+				entityIds:["winter", "mountain"]
 			},
-			{
-				lines:[
-				"An old silent pond...", 
-				"A frog jumps into the pond,", 
-				"splash! Silence again."
-				], 
-				sentiment:{confidence:"78", text:"Positive"}
-			},
-			{
-				lines:[
-				"An old silent pond...", 
-				"A frog jumps into the pond,", 
-				"splash! Silence again."
-				], 
-				sentiment:{confidence:"78", text:"Positive"}
-			}
+
 		];
 		console.log('returning:', _.map(list, function(haiku){
 			return new Haiku(haiku);

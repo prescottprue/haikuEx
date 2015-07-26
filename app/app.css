@@ -38,10 +38,11 @@ body {
 }
 .detail-label {
 	font-size:.9em;
+	margin-bottom:0px;
 }
 .sentiment {
-	font-size:.8em;
-	margin-top:40px;
+	font-size:.7em;
+	font-weight:200;
 }
 .md-chips-wrap{
 	padding-bottom:0px !important;
