@@ -16,7 +16,7 @@ module.exports =  {
 	],
 	haiku:[
 		{
-			type:'GET',
+			type:'POST',
 			endpoint:'/haiku',
 			controller: haikuCtrls.getExperience
 		}

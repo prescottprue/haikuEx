@@ -7,6 +7,7 @@ var url = require('url');
 var _ = require('underscore');
 var q = require('q'),
 request = require('request');
+	var http = require('http');
 
 /**
  * @api {get} /applications Get Haikus list
@@ -29,20 +30,101 @@ exports.getExperience = function(req, res, next){
 	console.log('get haiku experience request:', req.params);
   // An object of options to indicate where to post to
   if(req.body.content){
-  	var post_data = {
-	   	apiKey:"0ae1cb4e2f359fcb91c2979640bb3da8d3c469babb7f2953495d520d", 
-	  	extractors:"entities", 
-	  	text:req.body.content
-		};
-		console.log('postdata:', post_data);
-		request.post({url:"http://api.textrazor.com",form:post_data}, function(error, response, body){
-		  console.log(body, response);
-		  res.json(JSON.parse(body).response.entities);
-		});
+  	var h = new Haiku(req.body.content);
+  	h.getUrls().then(function(entities){
+  		console.log('entities with urls:', entities);
+  		res.json(entities);
+  	}, function(err){
+  		res.status(400).send('Error getting urls');
+  	});
   } else {
   	res.status(400).send('content is required to get haiku experience');
   }
 };
+function Haiku(content){
+	this.content = content;
+}
+Haiku.prototype = {
+		getEntities:function(){
+			var d = q.defer();
+			var self = this;
+			getEntitiesForContent(this.content).then(function(textEntities){
+				console.log('entities returned:', textEntities);
+				self.entities = textEntities;
+				d.resolve(textEntities);
+			}, function (err){
+				console.error('Error getting entities:', err);
+				d.reject(err);
+			});
+			return d.promise;
+		},
+		getUrls:function(){
+			var d = q.defer();
+			var self = this;
+
+
+			this.getEntities().then(function(entities){
+				var promiseArray = [];
+				console.log('-----------------got entities:', entities);
+				_.each(entities, function(entity){
+					var dImg = q.defer();
+					promiseArray.push(dImg.promise);
+					console.log('---------calling getImageUrls for:', entity.entityId);
+					getImageUrls(entity.entityId).then(function(imageArray){
+						console.log('got Image array:', imageArray);
+						entity.images = imageArray;
+						dImg.resolve(entity);
+					}, function(err){
+						dImg.reject(err);
+					});
+				});
+				q.all(promiseArray).then(function(out){
+					self.entities = out;
+					console.log('FINAL RESULT --------- ',  self);
+					d.resolve(self);
+				});
+			});
+
+			return d.promise;
+		}
+	}
+function getEntitiesForContent(content){
+	var d = q.defer();
+	if(content){
+  	var reqData = {
+	   	apiKey:"0ae1cb4e2f359fcb91c2979640bb3da8d3c469babb7f2953495d520d", 
+	  	extractors:"entities", 
+	  	text:content
+		};
+		console.log('get entities request:', reqData);
+		request.post({url:"http://api.textrazor.com",form:reqData}, function(error, response, body){
+		  console.log(body, response);
+		  d.resolve(JSON.parse(body).response.entities);
+		});
+  } else {
+  	res.status(400).send('content is required to get haiku experience');
+  }
+	return d.promise;
+}
+function getImageUrls(searchTerm){
+	var d = q.defer();
+	//Search for images with an api key and show the output
+	var apiKey = '6fnmbhyh5unehr82bvew8zcd';
+  var reqData = {
+    url:"https://api.gettyimages.com/v3/search/images/creative?phrase=" + searchTerm,
+    headers:{"Api-Key": apiKey}
+	};
+	request(reqData, function(error, response, body){
+	  console.log(body, response);
+	  var imageArray = JSON.parse(body).images;
+	  var uriArray = imageArray.map(function(image){
+	  	return image.display_sizes[0].uri;
+	  });
+	  console.log('URI ARRAY:', uriArray);
+	  d.resolve(uriArray);
+	});
+	return d.promise;
+}
 /**
  * @api {get} /applications Get Haikus list
  * @apiName GetHaiku
