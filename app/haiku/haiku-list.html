@@ -1,0 +1,24 @@
+<div layout-padding layout="row" layout-align="center center">
+<div  flex="80">
+<md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+    <md-list>
+      <!-- <md-subheader class="md-no-sticky">3 line item</md-subheader> -->
+      <md-list-item class="md-3-line" ng-repeat="haiku in haikuList" layout-sm="column" layout="row">
+        <div class="md-list-item-text" layout-padding>
+        	<h2 class="md-headline" ng-repeat="line in haiku.lines">{{ line}}</h2></br>
+        </div>
+        <div layout-padding layout-align="center center">
+        	<md-whiteframe class="md-whiteframe-z1" layout layout-align="center center">
+				    <img src="/img/haiku.png"/>
+				  </md-whiteframe>
+          <p>Sentiment:  {{ haiku.sentiment.text }} -  {{ haiku.sentiment.confidence }}%</p>
+        	<p>Tags</p>
+        </div>
+          
+        <md-divider ></md-divider>
+      </md-list-item>
+      
+    </md-list>
+</md-whiteframe>
+</div>
+</div>

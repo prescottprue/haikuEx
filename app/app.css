@@ -1,0 +1,20 @@
+html {
+  background-color: #f2f4f8;
+  overflow-x: hidden;
+}
+body {
+  color: #788288;
+  background-color: transparent;
+  font-size:1.6em;
+}
+
+.hc-background {
+	background-color: #f2f4f8;
+}
+.md-content {
+	background-color: #f2f4f8;
+}
+.md-whiteframe-z1,.md-whiteframe-z2 {
+	background-color:white !important;
+}
+
