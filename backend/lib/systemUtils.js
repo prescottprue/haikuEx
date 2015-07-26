@@ -1,6 +1,6 @@
 var server,
 http = require('http');
-
+var port;
 exports.createServer = function(app){
   /**
  * Create HTTP server.
@@ -22,7 +22,7 @@ exports.onListening = function(server){
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe

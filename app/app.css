@@ -5,7 +5,7 @@ html {
 body {
   color: #788288;
   background-color: transparent;
-  font-size:1.6em;
+  font-size:1.2em;
 }
 
 .hc-background {
@@ -17,4 +17,31 @@ body {
 .md-whiteframe-z1,.md-whiteframe-z2 {
 	background-color:white !important;
 }
+.lower-details{
+	margin-top:0px !important;
+}
+.tags {
+	font-size:.8em;
+	margin-top:20px;
+}
+.haiku-line {
+	font-weight:200;
+	font-size:1.2em;
+}
+.detail-label {
+	font-size:.9em;
+}
+.sentiment {
+	font-size:.8em;
+	margin-top:40px;
+}
+.md-chips-wrap{
+	padding-bottom:0px !important;
+	margin-bottom:0px !important;
+}
+.md-chips {
+	box-shadow:none !important;
+	padding-bottom:0px !important;
+	width:140px!important;
 
+}

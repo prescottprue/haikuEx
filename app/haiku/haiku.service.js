@@ -3,11 +3,24 @@ angular.module('haikuEx.haiku')
 .service('Haiku', ['$log', '$http', '$q', function ($log, $http, $q){
 	function Haiku(haikuData){
 		_.extend(this, haikuData);
-		this.getEntities().then(function(){
-			console.log('completed getEntities for:', haikuData);
-		})
 	}
 	Haiku.prototype = {
+		//--------- HaikuEx API Requests
+		getExperience:function(){
+			var d = $q.defer();
+			var self = this;
+			console.log('this:', this);
+			$http.post('/haiku', {content:this.lines.join("")}).then(function (res){
+				console.log('response:', res);
+				self.experience = res.data;
+				d.resolve(self);
+			}, function (err){
+				console.error('Error:', err);
+				d.reject(err);
+			});
+			return d.promise;
+		},
+		//-------- Seperate Requests all from client to build list
 		getSentiment:function(){
 			if(this.sentiment){
 				return this.sentiment;
@@ -15,18 +28,19 @@ angular.module('haikuEx.haiku')
 			//TODO: Handle loading sentiment from external api
 		},
 		getImage:function(){
+			var d = $q.defer();
 			var endpoint = "https://api.gettyimages.com/v3/search/images/creative?phrase=" + this.entites[0].matchedText;
 			console.log('image url:', endpoint);
-			var req = {method:'GET', url:endpoint, headers:{"Api-Key":"28anwbn4mdgf3cmbw93zke9m"}}
+			var req = {method:'GET', url:endpoint, headers:{"Api-Key":""}}
 			$http(req).then(function (res){
 				console.log('response:', res);
 			}, function (err){
 				console.error('Error:', err);
-			})
+			});
 		},
 		//Direct request to textrazor for word entity breakdown
-		//NOTE: TextRazor API was not allowing localhost or S3 hosted app to make requests. 
-		//			This is was one reason for the node server.
+		// NOTE: TextRazor API was not allowing localhost or S3 hosted app to make requests. 
+		// 			This is was one reason for the node server.
 		getEntities:function(){
 			var d = $q.defer();
 			var req = {
@@ -38,7 +52,6 @@ angular.module('haikuEx.haiku')
           'Access-Control-Allow-Headers': 'Content-Type, X-Requested-With'
         }, 
         data: {
-        	apiKey:"0ae1cb4e2f359fcb91c2979640bb3da8d3c469babb7f2953495d520d", 
         	extractors:"entities", 
         	text:this.lines.join(" ")
         }
@@ -72,56 +85,28 @@ angular.module('haikuEx.haiku')
 				"splash! Silence again."
 				], 
 				sentiment:{confidence:"78", text:"Positive"},
-				entites:[ {
-        "id": 0,
-        "matchingTokens": [
-          3
-        ],
-        "entityId": "Pond",
-        "freebaseTypes": [
-          "/geography/lake_type",
-          "/geography/geographical_feature_category"
-        ],
-        "confidenceScore": 1.1776,
-        "wikiLink": "http://en.wikipedia.org/wiki/Pond",
-        "matchedText": "pond",
-        "freebaseId": "/m/0184rb",
-        "relevanceScore": 0,
-        "entityEnglishId": "Pond",
-        "startingPos": 14,
-        "endingPos": 18,
-        "wikidataId": "Q3253281"
-      },
-      {
-        "id": 1,
-        "type": [
-          "Species",
-          "Eukaryote",
-          "Animal",
-          "Amphibian"
-        ],
-        "matchingTokens": [
-          6
-        ],
-        "entityId": "Frog",
-        "freebaseTypes": [
-          "/fictional_universe/character_species",
-          "/biology/animal",
-          "/visual_art/art_subject",
-          "/book/book_subject",
-          "/film/film_subject",
-          "/biology/organism_classification"
-        ],
-        "confidenceScore": 1.96404,
-        "wikiLink": "http://en.wikipedia.org/wiki/Frog",
-        "matchedText": "frog",
-        "freebaseId": "/m/09ld4",
-        "relevanceScore": 0.128685,
-        "entityEnglishId": "Frog",
-        "startingPos": 25,
-        "endingPos": 29,
-        "wikidataId": "Q53636"
-      }
+				entityIds: [
+			    "Pond",
+			    "Frog"
+			  ],
+				entities:[ 
+					{
+	        	entityId: "Pond",
+	       		images:[ 
+	       			"http://cache1.asset-cache.net/xt/175824809.jpg?v=1&g=fs1|0|IMS|24|809&s=1&b=RjI4",
+	        		"http://cache4.asset-cache.net/xt/525389593.jpg?v=1&g=fs1|0|CUL|89|593&s=1&b=RjI4"
+	        	]
+      		},
+      		{
+	        	entityId: "Frog",
+	       		images:[ 
+	       			 "http://cache2.asset-cache.net/xt/535657961.jpg?v=1&g=fs1|0|ROF|57|961&s=1&b=RjI4",
+        "http://cache3.asset-cache.net/xt/535657933.jpg?v=1&g=fs1|0|ROF|57|933&s=1&b=RjI4",
+        "http://cache2.asset-cache.net/xt/535657927.jpg?v=1&g=fs1|0|ROF|57|927&s=1&b=RjI4",
+        "http://cache4.asset-cache.net/xt/451821011.jpg?v=1&g=fs1|0|DV|21|011&s=1&b=RTRE"
+	        	]
+      		},
+
 				]
 			},
 			{
@@ -152,6 +137,7 @@ angular.module('haikuEx.haiku')
 		console.log('returning:', _.map(list, function(haiku){
 			return new Haiku(haiku);
 		}));
+		//TODO: Have content loaded from database
 		return _.map(list, function(haiku){
 			return new Haiku(haiku);
 		})

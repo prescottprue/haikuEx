@@ -27,13 +27,12 @@ request = require('request');
  *
  */
 exports.getExperience = function(req, res, next){
-	console.log('get haiku experience request:', req.params);
   // An object of options to indicate where to post to
   if(req.body.content){
   	var h = new Haiku(req.body.content);
-  	h.getUrls().then(function(entities){
-  		console.log('entities with urls:', entities);
-  		res.json(entities);
+  	h.getUrls().then(function(haikuList){
+  		console.log('haikuList with urls:', haikuList);
+  		res.json(haikuList);
   	}, function(err){
   		res.status(400).send('Error getting urls');
   	});
@@ -50,7 +49,11 @@ Haiku.prototype = {
 			var self = this;
 			getEntitiesForContent(this.content).then(function(textEntities){
 				console.log('entities returned:', textEntities);
-				self.entities = textEntities;
+				//Remove all entity info except id (used in image search)
+				textEntities = _.map(textEntities, function(entity){
+	  			return _.pick(entity, 'entityId');
+	  		});
+	  		console.log('textEntities:', textEntities);
 				d.resolve(textEntities);
 			}, function (err){
 				console.error('Error getting entities:', err);
@@ -61,18 +64,19 @@ Haiku.prototype = {
 		getUrls:function(){
 			var d = q.defer();
 			var self = this;
-
-
 			this.getEntities().then(function(entities){
+
+				self.entityIds = _.pluck(entities, 'entityId');
 				var promiseArray = [];
-				console.log('-----------------got entities:', entities);
+				console.log('-----------------got entities:', self);
 				_.each(entities, function(entity){
 					var dImg = q.defer();
 					promiseArray.push(dImg.promise);
 					console.log('---------calling getImageUrls for:', entity.entityId);
 					getImageUrls(entity.entityId).then(function(imageArray){
-						console.log('got Image array:', imageArray);
-						entity.images = imageArray;
+						// console.log('got Image array:', imageArray);
+						//Only keep 4 images
+						entity.images = _.first(imageArray, 4);
 						dImg.resolve(entity);
 					}, function(err){
 						dImg.reject(err);
@@ -80,7 +84,7 @@ Haiku.prototype = {
 				});
 				q.all(promiseArray).then(function(out){
 					self.entities = out;
-					console.log('FINAL RESULT --------- ',  self);
+					console.log('FINAL RESULT getUrls --------- ',  self);
 					d.resolve(self);
 				});
 			});
@@ -98,7 +102,7 @@ function getEntitiesForContent(content){
 		};
 		console.log('get entities request:', reqData);
 		request.post({url:"http://api.textrazor.com",form:reqData}, function(error, response, body){
-		  console.log(body, response);
+		  // console.log(body, response);
 		  d.resolve(JSON.parse(body).response.entities);
 		});
   } else {
@@ -115,7 +119,7 @@ function getImageUrls(searchTerm){
     headers:{"Api-Key": apiKey}
 	};
 	request(reqData, function(error, response, body){
-	  console.log(body, response);
+	  // console.log(body, response);
 	  var imageArray = JSON.parse(body).images;
 	  var uriArray = imageArray.map(function(image){
 	  	return image.display_sizes[0].uri;
