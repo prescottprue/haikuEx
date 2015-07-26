@@ -10,30 +10,21 @@ rename = require('gulp-rename'),
 clean = require('gulp-clean'),
 cssmin = require('gulp-cssmin'),
 stripDebug = require('gulp-strip-debug'),
-stripNgLog = require('gulp-strip-ng-log');
+stripNgLog = require('gulp-strip-ng-log'),
+_ = require('underscore');
 
-var _ = require('underscore');
 var pkg = require('./package.json');
 var conf = require('./config.json');
+var env = require('./env.json');
 var refBuilder = require('./lib/refBuilder');
 var assets = require('./assets');
 var locatedStyleAssets = locateAssets('styles');
 var locatedAppAssets = locateAssets('app');
 var locatedVendorAssets = locateAssets('vendor');
 
-function locateAssets(assetType){
-  return assets[assetType].map(function(asset){
-    return './' + conf.devFolder + '/' + asset;
-  });
-}
 /** Copy Style Assets to single styles.css file in distFolder
  */
- //Copy Fonts
-gulp.task('copyFonts', function(){
-    return gulp.src([conf.devFolder + '/bower/font-awesome/fonts/**'])
-    .pipe(gulp.dest(conf.distFolder+ '/fonts/'));
-});
-gulp.task('assets:style', ['copyFonts'],function () {
+gulp.task('assets:style',function () {
   return gulp.src(locatedStyleAssets)
   .pipe(cssmin({keepSpecialComments:0}))
   .pipe(concat('app.css'))
@@ -48,6 +39,7 @@ gulp.task('assets:vendor', function () {
   .pipe(concat('vendor.js'))
   .pipe(gulp.dest(conf.distFolder));
 });
+
 /** Copy Vendor libs to single vendor.js file in distFolder
  */
 //TODO: Handle scripts per env
@@ -56,6 +48,7 @@ gulp.task('assets:vendorLib', function () {
   // Writes vendor.js to dist/ folder
   .pipe(gulp.dest(conf.distFolder));
 });
+
 /** Angular annotation and Application files concatination to haikuEx.js
    */
 gulp.task('assets:app', function () {
@@ -74,6 +67,7 @@ gulp.task('copyHtml', function(){
     return gulp.src([conf.devFolder + '/**/*.html', '!' + conf.devFolder + '/index-template.html', '!' + conf.devFolder + '/index.html', '!' + conf.devFolder+'/bower/**/*.html'], {base:'./'+conf.devFolder+'/'})
     .pipe(gulp.dest(conf.distFolder));
 });
+
 /** Copy Bower folders to distFolder in respective locations
  */
 //TODO: Convert html files to js?
@@ -119,7 +113,7 @@ gulp.task('buildEnv', function () {
     constants: { 
       VERSION:pkg.version,  
       CONST:{
-        FB_URL:"https://pruvit.firebaseio.com"
+        FB_URL:env.fbUrl
       }
     },
     stream:true
@@ -162,13 +156,24 @@ gulp.task('connect:dist', function() {
   });
 });
 
+/** Locate assets within devFolder folder
+*/
+function locateAssets(assetType){
+  return assets[assetType].map(function(asset){
+    return './' + conf.devFolder + '/' + asset;
+  });
+}
 /** Clean dist folder
 */
 // gulp.task('clean', function(){
 //   return gulp.src(conf.distFolder)
 //   .pipe(clean());
 // });
-
+/** Clean dist folder
+*/
+gulp.task('watch-grunt', function(){
+  gulp.watch(['./Gulpfile.js'], ['assets']);
+});
 gulp.task('watch-assets', function(){
   gulp.watch(['./assets.js'], ['assets']);
 });
