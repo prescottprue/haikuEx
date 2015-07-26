@@ -1,4 +1,3 @@
-app/bower
 dist
 node_modules
 **/.DS_Store
