@@ -11,7 +11,8 @@ clean = require('gulp-clean'),
 cssmin = require('gulp-cssmin'),
 stripDebug = require('gulp-strip-debug'),
 stripNgLog = require('gulp-strip-ng-log'),
-_ = require('underscore');
+_ = require('underscore'),
+nodemon = require('gulp-nodemon');
 
 var pkg = require('./package.json');
 var conf = require('./config.json');
@@ -142,17 +143,26 @@ gulp.task('connect:dev', function() {
   connect.server({
     root: conf.devFolder || 'app',
     // livereload: true,
-    port: conf.port || 3000
+    port: conf.port || 4000
   });
 });
 
+/** Run local Backend API server to host app folder
+*/
+gulp.task('connect:backend', function () {
+  nodemon({
+    script: 'server.js'
+  , ext: 'js html'
+  // , env: { 'NODE_ENV': 'development' }
+  })
+})
 /** Run local server to host dist folder
 */
 gulp.task('connect:dist', function() {
   connect.server({
     root: conf.distFolder || 'dist',
     // livereload: true,
-    port: conf.port || 3000
+    port: conf.port || 6000
   });
 });
 
@@ -186,6 +196,6 @@ gulp.task('build', ['buildEnv', 'assets']);
 
 gulp.task('upload', ['build','s3Upload']);
 
-gulp.task('default', ['build','connect:dev']);
+gulp.task('default', ['build','connect:dev', 'connect:backend']);
 
 gulp.task('dist', ['build', 'connect:dist']);
