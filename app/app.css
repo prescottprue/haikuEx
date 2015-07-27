@@ -253,10 +253,14 @@ body {
 
 }
 .sentiment {
-	font-size:1.3em;
+	font-size:2em;
 	font-weight:200;
-}
 
+}
+.sentiment i {
+	padding:20px;
+	font-size:2em;
+}
 .md-chips {
 	box-shadow:none !important;
 	padding-bottom:0px !important;

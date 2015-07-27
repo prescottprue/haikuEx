@@ -2,6 +2,8 @@ angular.module('haikuEx')
 .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('blue')
-    .accentPalette('pink')
+    .accentPalette('green')
   $mdThemingProvider.theme('docs-dark', 'default').dark();
+  $mdThemingProvider.theme('altTheme')
+    .primaryPalette('indigo')
 })

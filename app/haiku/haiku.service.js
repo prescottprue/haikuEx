@@ -3,6 +3,7 @@ angular.module('haikuEx.haiku')
 .service('Haiku', ['$log', '$http', '$q', function ($log, $http, $q){
 	function Haiku(haikuData){
 		_.extend(this, haikuData);
+
 	}
 	Haiku.prototype = {
 		//--------- HaikuEx API Requests
@@ -115,7 +116,7 @@ angular.module('haikuEx.haiku')
 				"Listening, that evening,", 
 				"To the rain in the mountain. "
 				], 
-				sentiment:{confidence:"80", text:"Positive"},
+				sentiment:{confidence:"30", text:"Positive"},
 				entities:[
 					{
 						entityId:"Winter",

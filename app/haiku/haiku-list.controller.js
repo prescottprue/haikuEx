@@ -3,5 +3,11 @@ angular.module('haikuEx.haiku')
 
 		console.log('ApplicationListController');
 		$scope.haikuList = HaikuList;
-
+		$scope.showSmiley = function(num){
+			if(parseInt(num) >= 50){
+				return true;
+			} else {
+				return false;
+			}
+		};
 }])
