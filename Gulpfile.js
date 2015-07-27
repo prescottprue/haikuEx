@@ -147,15 +147,7 @@ gulp.task('connect:dev', function() {
   });
 });
 
-/** Run local Backend API server to host app folder
-*/
-gulp.task('connect:backend', function () {
-  nodemon({
-    script: 'server.js'
-  , ext: 'js html'
-  // , env: { 'NODE_ENV': 'development' }
-  })
-})
+
 /** Run local server to host dist folder
 */
 gulp.task('connect:dist', function() {
@@ -164,6 +156,16 @@ gulp.task('connect:dist', function() {
     // livereload: true,
     port: conf.port || 6000
   });
+});
+
+/** Run local Backend API server to host app folder
+*/
+gulp.task('connect:backend', function () {
+  nodemon({
+    script: 'server.js'
+  , ext: 'js html'
+  // , env: { 'NODE_ENV': 'development' }
+  })
 });
 
 /** Locate assets within devFolder folder
@@ -196,6 +198,6 @@ gulp.task('build', ['buildEnv', 'assets']);
 
 gulp.task('upload', ['build','s3Upload']);
 
-gulp.task('default', ['build','connect:dev', 'connect:backend']);
+gulp.task('default', ['build','connect:backend']);
 
 gulp.task('dist', ['build', 'connect:dist']);
