@@ -34,19 +34,24 @@ body {
 .haiku-text-box {
 	background-color:rgba(0, 0, 0,.5) !important;
 	z-index:50;
-	margin-top:40% !important;
+	/*margin-top:40% !important;*/
 }
 .haiku-details{
-	margin-top:100px !important;
+	/*margin-top:100px !important;*/
 	/*background: rgb(97, 97, 97);*/
 	color:rgb(0, 0, 0);
-	height:100px;
-	width:100%;
+	/*height:100px;*/
+	/*width:100%;*/
 	z-index:50;
 }
+.haiku-media {
+	height:400px;
+	width:400px;
+	padding-top:50px;
+}
 .entity-image-wrapper {
-	margin-right:30px;
-	margin-left:30px;
+/*	margin-right:30px;
+	margin-left:30px;*/
 	filter:blur(6px);
 	-webkit-filter: blur(6px);
 	position: absolute;
@@ -54,12 +59,12 @@ body {
 	right:0;
   z-index: 0;
   height:100%;
-
+  width:70%;
 }
 
 .entity-image {
-	height:70%;
-	/*margin-top:5%;*/
+	height:75%;
+	margin-bottom:10%;
 	width:85%;
 	margin-left:7.5%;
 	margin-right:7.5%;
@@ -67,11 +72,14 @@ body {
 	display:inline-block;
 }
 .detail-label {
-	font-size:.9em;
+	font-size:1.2em;
 	margin-bottom:0px;
+	text-decoration: underline;
+	font-weight:300;
+
 }
 .sentiment {
-	font-size:.7em;
+	font-size:1em;
 	font-weight:200;
 }
 

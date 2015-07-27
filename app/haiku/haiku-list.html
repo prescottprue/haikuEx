@@ -1,41 +1,39 @@
 <div layout-padding layout="row" layout-align="center center">
-  <div  flex="85">
+  <div flex="85">
     <md-whiteframe class="md-whiteframe-z1" layout="row" layout-align="center center">
       <div flex="100">
         <md-list >
-          <md-list-item class="md-3-line haiku-item" layout-fill ng-repeat="haiku in haikuList" layout-sm="column" layout="row" layout-align="center center">
-          <div layout="column" layout-fill>
-            <div layout-align="center center" layout="column" layout-fill>
-              <div layout-align="center center" flex="80" layout="row" layout-sm="column">
-                <div layout-align="center center" layout="column" layout-margin flex>
-                  <div class="entity-image-wrapper" flex layout-fill layout-margin>
+          <md-list-item class="md-3-line haiku-item" layout="column" layout-sm="column" layout-fill  layout-align="center center" ng-repeat="haiku in haikuList">
+            <div layout="row" layout-fill>
+              <div layout="column" layout-align="center center"  layout-fill flex="70">
+                <!-- Image and text -->
+                <div class="haiku-media" layout="row" layout-sm="column" flex="80" layout-align="center center" layout-fill>
+                  <!-- Image -->
+                  <div class="entity-image-wrapper" layout-fill flex="100">
                     <img class="entity-image" ng-src="{{haiku.entities[0].images[0]}}" alt="{{haiku.entities[0].entityId}}"/>
                   </div>
-                  <md-whiteframe class="md-whiteframe-z2 haiku-text-box" layout-fill layout layout-padding layout-align="center center" flex>
-                    <div class="md-list-item-text" layout-padding layout="column" layout-align="center center" style="display:inline-block;">
+                  <!-- Text Box -->
+                  <div class="md-whiteframe-z2 haiku-text-box" layout layout-padding layout-align="center center">
+                    <div class="md-list-item-text" layout-margin layout="column" layout-align="center center" style="display:inline-block;">
                       <div ng-repeat="line in haiku.lines" layout-align="center center">
-                       <span class="haiku-line" >
-                        {{line}}
-                       </span></br>
+                        <span class="haiku-line" >
+                          {{line}}
+                        </span></br>
                       </div>
                     </div>
-                  </md-whiteframe>
-                  <!-- <p>{{haiku.entities[0].entityId}}</p> -->
+                  </div>
                 </div>
               </div>
-            </div>
-              <div layout="row" class="haiku-details" layout-padding layout-fill layout-align="center center">
-                <div flex="50" layout-align="center center" layout="row">
-                  <div layout="column">
+              <div layout="column" class="haiku-details" layout-padding layout-fill layout-align="center center" flex="30">
+                <div layout="column" layout-margin layout-padding layout-align="center center" >
                     <span class="detail-label">
                       Sentiment
                     </span></br>
                     <span class="sentiment">
                       {{ haiku.sentiment.text }} -  {{ haiku.sentiment.confidence }}%
                     </span>
-                  </div>
                 </div>
-                <div layout="column" layout-margin flex="50" layout-align="center center">
+                <div layout="column" layout-margin layout-padding flex="50" layout-align="center center">
                   <span class="detail-label">
                     Tags
                   </span>
@@ -51,7 +49,6 @@
               </div>
             </div>
             <md-divider ng-if="!$last"></md-divider>
-
           </md-list-item>
         </md-list>
       </div>
