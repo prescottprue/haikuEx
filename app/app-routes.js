@@ -7,8 +7,7 @@ angular.module('haikuEx')
       abstract:true,
       views:{
         'topnav':{
-          templateUrl:'components/nav/topnav.html',
-          controller:'NavCtrl'
+          templateUrl:'components/nav/topnav.html'
         },
         'main':{
           template:'<ui-view layout-fill></ui-view>'

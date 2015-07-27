@@ -2,8 +2,14 @@ angular.module('haikuEx.haiku')
 
 .service('Haiku', ['$log', '$http', '$q', function ($log, $http, $q){
 	function Haiku(haikuData){
-		_.extend(this, haikuData);
-
+		if(_.isString(haikuData)){
+			this.content = haikuData;
+		} else {
+			_.extend(this, haikuData);
+			if(this.lines){
+				this.content = this.lines.join("");
+			}
+		}
 	}
 	Haiku.prototype = {
 		//--------- HaikuEx API Requests
@@ -11,7 +17,7 @@ angular.module('haikuEx.haiku')
 			var d = $q.defer();
 			var self = this;
 			console.log('this:', this);
-			$http.post('/haiku', {content:this.lines.join("")}).then(function (res){
+			$http.post('/haiku', {content:this.content}).then(function (res){
 				console.log('response:', res);
 				self.experience = res.data;
 				d.resolve(self);
@@ -131,11 +137,10 @@ angular.module('haikuEx.haiku')
 			},
 
 		];
-		console.log('returning:', _.map(list, function(haiku){
+		var mappedList = _.map(list, function(haiku){
 			return new Haiku(haiku);
-		}));
+		});
+		console.log('returning:', mappedList);
 		//TODO: Have content loaded from database
-		return _.map(list, function(haiku){
-			return new Haiku(haiku);
-		})
+		return mappedList;
 }])

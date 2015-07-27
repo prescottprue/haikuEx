@@ -2,7 +2,6 @@ dist
 node_modules
 **/.DS_Store
 env.json
-app/bower
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

@@ -49,19 +49,19 @@ Haiku.prototype = {
 		//TODO: Return this with those parameters included
 		var d = q.defer();
 		var self = this;
-		self.getUrls().then(function (entitiesWithImgs){
-			self.entities = entitiesWithImgs;
-			console.log('getUrls returned:', entitiesWithImgs);
-			self.getSentiment().then(function (sentiment){
-				self.sentiment = sentiment;
-				console.log('getSentiment finished with self:', self);
+		self.getSentiment().then(function (sentiment){
+			self.sentiment = sentiment;
+			console.log('getSentiment finished with self:', self);
+			self.getUrls().then(function (entitiesWithImgs){
+				self.entities = entitiesWithImgs;
+				console.log('getUrls returned:', entitiesWithImgs);
 				d.resolve(self);
 			}, function (err){
-				console.error('Error getting sentiment:', err);
-				d.reject(err);
+				console.error('Error getting entities:', err);
+				d.resolve(this); //Return this even if getUrls fails
 			});
 		}, function (err){
-			console.error('Error getting entities:', err);
+			console.error('Error getting sentiment:', err);
 			d.reject(err);
 		});
 		return d.promise;
@@ -101,26 +101,21 @@ Haiku.prototype = {
 		this.getEntities().then(function (entities){
 			//Build entityIds array
 			self.entityIds = _.pluck(entities, 'entityId');
-			var promiseArray = [];
-			_.each(entities, function (entity){
-				//Create a promise for each getImageUrls
-				var dImg = q.defer();
-				promiseArray.push(dImg.promise);
-				console.log('---------calling getImageUrls for:', entity.entityId);
-				getImageUrls(entity.entityId).then(function (imageArray){
-					// console.log('got Image array:', imageArray);
-					//Only keep 4 images
-					entity.images = _.first(imageArray, 4);
-					dImg.resolve(entity);
-				}, function (err){
-					dImg.reject(err);
-				});
-			});
-			q.all(promiseArray).then(function (out){
-				self.entities = out;
-				console.log('FINAL RESULT getUrls --------- ',  self);
+			//Create a promise for each getImageUrls
+			console.log('---------calling getImageUrls for:', entities[0].entityId);
+			getImageUrls(entities[0].entityId).then(function (imageArray){
+				// console.log('got Image array:', imageArray);
+				//Only keep 4 images
+				entities[0].images = _.first(imageArray, 4);
+				self.entities = entities;
 				d.resolve(self);
+			}, function (err){
+				console.error('Error getting image urls --------- ',  err);
+				d.reject(err);
 			});
+		}, function (err){
+			console.error('error getting entities:', err);
+			d.reject(err);
 		});
 		return d.promise;
 	}
