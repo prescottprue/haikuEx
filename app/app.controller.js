@@ -7,7 +7,10 @@ angular.module('haikuEx')
       bottom: true,
       top: false
     };
-    $scope.haikuList = HaikuList;
+    HaikuList().$loaded().then(function(haikuList){
+      $scope.haikuList = haikuList;
+      console.log('$scope.haikuList set:', haikuList);
+    });
 
     $scope.showDialog = function(ev) {
       $mdDialog.show({

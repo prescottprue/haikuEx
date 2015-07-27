@@ -1,1 +1,1 @@
-angular.module('haikuEx.haiku', ['haikuEx.const'])
+angular.module('haikuEx.haiku', ['haikuEx.const', 'firebase.utils'])

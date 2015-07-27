@@ -6,8 +6,25 @@
 var url = require('url');
 var _ = require('underscore');
 var q = require('q'),
-request = require('request');
-	var http = require('http');
+request = require('request'),
+http = require('http');
+firebase = require('firebase');
+var ENV = require('../../env.json');
+
+var Firebase = require('firebase');
+var mainRef = new Firebase('https://pruvit.firebaseio.com/haikuEx');
+
+checkEnvVars();
+function checkEnvVars(){
+	var envVars = ["TEXT_RZR_KEY", "MASHAPE_KEY", "GETTY_IMG_KEY"];
+	_.each(envVars, function(currentVar){
+		if(!process.env[currentVar]){
+			console.error('Check environment vars');
+		} else {
+			console.log('Env variable ' + currentVar + ' exists');
+		}
+	});
+}
 /**
  * @api {get} /applications Get Haikus list
  * @apiName GetHaiku
@@ -29,10 +46,16 @@ exports.getExperience = function(req, res, next){
   // An object of options to indicate where to post to
   if(req.body.content){
   	var h = new Haiku(req.body.content);
-  	h.getUrls().then(function(haikuList){
-  		console.log('haikuList with urls:', haikuList);
+  	h.getExperience().then(function(haiku){
+  		console.log('haiku with urls:', haiku);
   		//TODO: Include sentiment
-  		res.json(haikuList);
+			mainRef.push(haiku, function(err){
+				if(err){
+					res.status(400).send('Error writing new haiku to Firebase');
+				} else {
+  				res.json(haiku);
+				}
+			});
   	}, function(err){
   		res.status(400).send('Error getting urls');
   	});
@@ -58,7 +81,7 @@ Haiku.prototype = {
 				d.resolve(self);
 			}, function (err){
 				console.error('Error getting entities:', err);
-				d.resolve(this); //Return this even if getUrls fails
+				d.resolve(self); //Return this even if getUrls fails
 			});
 		}, function (err){
 			console.error('Error getting sentiment:', err);

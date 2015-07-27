@@ -4,6 +4,7 @@ angular.module('haikuEx.haiku')
 	function Haiku(haikuData){
 		if(_.isString(haikuData)){
 			this.content = haikuData;
+			console.log('new haiku:', this);
 		} else {
 			_.extend(this, haikuData);
 			if(this.lines){
@@ -76,71 +77,109 @@ angular.module('haikuEx.haiku')
 	}
 	return Haiku;
 }])
-// .factory('HaikuListFactory', ['$log', '$firebaseArray', function ($log, $firebaseArray){
-// 	return $firebaseArray.$extend({
+.factory('$haiku', ['$log', '$firebaseArray', '$firebaseObject', 'Haiku', function ($log, $firebaseArray, $firebaseObject, Haiku){
+	return function(snap){
+		var haiku;
+		if(_.has(snap.val(), 'content')){
+			haiku = new Haiku(snap.val().content);
+		} else {
+			haiku = new Haiku(snap.val().lines.join("\n"));
+		}
+		haiku = _.extend(haiku, $firebaseObject(snap.ref()));
+		return haiku;
+	};
+}])
+.factory('HaikuListFactory', ['$log', '$firebaseArray', '$haiku',  function ($log, $firebaseArray, $haiku){
+	return $firebaseArray.$extend({
+		// override the $createObject behavior to return a File object
+    $$added: function(snap) {
+      console.log('snap:', snap.val());
+      return new $haiku(snap);
+    },
+    
+	});
+}])
 
-// 	});
-// }])
+//References location based on app name and returns extended firebaseArray
+.factory('HaikuList', ['fbutil', 'HaikuListFactory', function (fbutil, HaikuListFactory) {
+	return function (){
+		var ref = fbutil.ref("haikuEx");
+		console.log('List factory:', ref);
+  	return HaikuListFactory(ref);
+	}
+}])
 //References location based on app name and returns extended firebaseArray
 
-.factory('HaikuList', [ 'Haiku', function ( Haiku){
-	var list = [
-			{
-				lines:[
-				"An old silent pond...", 
-				"A frog jumps into the pond,", 
-				"splash! Silence again."
-				], 
-				sentiment:{confidence:"78", text:"Positive"},
-				entityIds: [
-			    "Pond",
-			    "Frog"
-			  ],
-				entities:[ 
-					{
-	        	entityId: "Pond",
-	       		images:[ 
-	       			"http://cache1.asset-cache.net/xt/175824809.jpg?v=1&g=fs1|0|IMS|24|809&s=1&b=RjI4",
-	        		"http://cache4.asset-cache.net/xt/525389593.jpg?v=1&g=fs1|0|CUL|89|593&s=1&b=RjI4"
-	        	]
-      		},
-      		{
-	        	entityId: "Frog",
-	       		images:[ 
-	       			 "http://cache2.asset-cache.net/xt/535657961.jpg?v=1&g=fs1|0|ROF|57|961&s=1&b=RjI4",
-        "http://cache3.asset-cache.net/xt/535657933.jpg?v=1&g=fs1|0|ROF|57|933&s=1&b=RjI4",
-        "http://cache2.asset-cache.net/xt/535657927.jpg?v=1&g=fs1|0|ROF|57|927&s=1&b=RjI4",
-        "http://cache4.asset-cache.net/xt/451821011.jpg?v=1&g=fs1|0|DV|21|011&s=1&b=RTRE"
-	        	]
-      		},
+// .factory('HaikuList', [ 'Haiku', function ( Haiku){
+// 	var list = [
+// 			{
+// 				lines:[
+// 				"An old silent pond...", 
+// 				"A frog jumps into the pond,", 
+// 				"splash! Silence again."
+// 				], 
+// 				sentiment:{confidence:"78", text:"Positive"},
+// 				entityIds: [
+// 			    "Pond",
+// 			    "Frog"
+// 			  ],
+// 				entities:[ 
+// 					{
+// 	        	entityId: "Pond",
+// 	       		images:[ 
+// 	       			"http://cache1.asset-cache.net/xt/175824809.jpg?v=1&g=fs1|0|IMS|24|809&s=1&b=RjI4",
+// 	        		"http://cache4.asset-cache.net/xt/525389593.jpg?v=1&g=fs1|0|CUL|89|593&s=1&b=RjI4"
+// 	        	]
+//       		},
+//       		{
+// 	        	entityId: "Frog",
+// 	       		images:[ 
+// 	       			 "http://cache2.asset-cache.net/xt/535657961.jpg?v=1&g=fs1|0|ROF|57|961&s=1&b=RjI4",
+//         "http://cache3.asset-cache.net/xt/535657933.jpg?v=1&g=fs1|0|ROF|57|933&s=1&b=RjI4",
+//         "http://cache2.asset-cache.net/xt/535657927.jpg?v=1&g=fs1|0|ROF|57|927&s=1&b=RjI4",
+//         "http://cache4.asset-cache.net/xt/451821011.jpg?v=1&g=fs1|0|DV|21|011&s=1&b=RTRE"
+// 	        	]
+//       		},
 
-				]
-			},
-			{
-				lines:[
-				"Winter seclusion -", 
-				"Listening, that evening,", 
-				"To the rain in the mountain. "
-				], 
-				sentiment:{confidence:"30", text:"Positive"},
-				entities:[
-					{
-						entityId:"Winter",
-						images:["http://cache2.asset-cache.net/xt/551984935.jpg?v=1&g=fs1|0|CUL|84|935&s=1&b=RjI4"]
-					},
-					{
-						entityId:"Mountain",
-						images:["http://cache2.asset-cache.net/xt/543345753.jpg?v=1&g=fs1|0|ROF|45|753&s=1&b=RjI4", ]
-					}
-				],
-				entityIds:["winter", "mountain"]
-			},
+// 				]
+// 			},
+// 			{
+// 				lines:[
+// 				"Winter seclusion -", 
+// 				"Listening, that evening,", 
+// 				"To the rain in the mountain. "
+// 				], 
+// 				sentiment:{confidence:"30", text:"Positive"},
+// 				entities:[
+// 					{
+// 						entityId:"Winter",
+// 						images:["http://cache2.asset-cache.net/xt/551984935.jpg?v=1&g=fs1|0|CUL|84|935&s=1&b=RjI4"]
+// 					},
+// 					{
+// 						entityId:"Mountain",
+// 						images:["http://cache2.asset-cache.net/xt/543345753.jpg?v=1&g=fs1|0|ROF|45|753&s=1&b=RjI4", ]
+// 					}
+// 				],
+// 				entityIds:["winter", "mountain"]
+// 			},
 
-		];
-		var mappedList = _.map(list, function(haiku){
-			return new Haiku(haiku);
-		});
-		console.log('returning:', mappedList);
-		//TODO: Have content loaded from database
-		return mappedList;
-}])
+// 		];
+// 		function mappedList(){
+// 			return _.map(list, function(haiku){
+// 				return new Haiku(haiku);
+// 			});
+// 		};
+// 		console.log('returning:', mappedList);
+// 		//TODO: Have content loaded from database
+// 		return {
+// 			get:function(){
+// 				return mappedList();
+// 			},
+// 			add:function(content){
+// 				var haiku = new Haiku(content)
+// 				haiku.getExperience().then(function(){
+// 					list.push({});
+// 				})
+// 			}
+// 		}
+// }])

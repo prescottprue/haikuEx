@@ -12,6 +12,7 @@ Create a software prototype that presents a stream of haiku and conveys their ex
 Scroll through Haikus to or add your own by clicking the plus button (coming soon)
 
 ### Local Development
+To successfully run the server locally you will need to have the correct path variables, or have env.json (Available in Dropbox folder).
 
 1. Make sure you have NodeJS and GulpJS installed.
 2. Clone this repository `git clone git@github.com:prescottprue/haikuEx.git`
