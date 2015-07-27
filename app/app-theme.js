@@ -4,6 +4,4 @@ angular.module('haikuEx')
     .primaryPalette('blue')
     .accentPalette('green')
   $mdThemingProvider.theme('docs-dark', 'default').dark();
-  $mdThemingProvider.theme('altTheme')
-    .primaryPalette('indigo')
 })

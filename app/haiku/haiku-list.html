@@ -35,14 +35,14 @@
             <md-progress-linear md-mode="buffer" class="md-warn" ng-if="!showSmiley(haiku.sentiment.confidence)" value="{{ haiku.sentiment.confidence }}" md-buffer-value="{{ parseInt(haiku.sentiment.confidence) }}"></md-progress-linear>
                   </div>
                 </div>
-                <div layout="column" layout-margin layout-padding layout-fill layout-align="center center">
+                <div layout="column" layout-margin layout-padding layout-fill layout-align="center center" style="margin-top:40px;">
                   <span class="detail-label">
                     Tags
                   </span>
-                  <div layout="row" layout-sm="column" layout-margin>
+                  <div layout="row" layout-sm="column" layout-margin style="margin-top:40px;">
                     <md-chips ng-model="haiku.entityIds" readonly="true">
-                      <md-chip-template>
-                        <strong>{{$chip}}</strong>
+                      <md-chip-template class="tag-chip">
+                        <strong class="tag-chip-label">{{$chip}}</strong>
                         <!-- <em>(fruit)</em> -->
                       </md-chip-template>
                     </md-chips>

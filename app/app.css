@@ -250,7 +250,6 @@ body {
 	margin-bottom:0px;
 	text-decoration: underline;
 	font-weight:300;
-
 }
 .sentiment {
 	font-size:2em;
@@ -276,4 +275,11 @@ body {
 	padding-left:20px;
 	padding-right:20px;
 
+}
+.tag-chip {
+	font-size:1.7em; 
+	padding:13px;
+}
+.tag-chip-label {
+	font-weight:300;
 }
