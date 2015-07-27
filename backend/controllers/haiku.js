@@ -49,6 +49,7 @@ exports.getExperience = function(req, res, next){
   	h.getExperience().then(function(haiku){
   		console.log('haiku with urls:', haiku);
   		//TODO: Include sentiment
+  		haiku.lines = haiku.content.split("\n");
 			mainRef.push(haiku, function(err){
 				if(err){
 					console.log('error saving haiku:', err);

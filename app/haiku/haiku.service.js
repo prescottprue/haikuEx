@@ -4,16 +4,17 @@ angular.module('haikuEx.haiku')
 	function Haiku(haikuData){
 		if(_.isString(haikuData)){
 			this.content = haikuData;
-			console.log('new haiku:', this);
+			// console.log('new haiku:', this);
 			if(!this.lines){
 				//TODO: Check if this is working
 				this.lines = this.content.split("\n");
+				console.log('lines:', this.lines);
 			}
 		} else {
 			_.extend(this, haikuData);
 			console.log('extended this:');
-			if(this.lines){
-				this.content = this.lines.join("");
+			if(this.lines && !this.content){
+				this.content = this.lines.join("\n");
 			}
 		}
 	}
@@ -98,7 +99,6 @@ angular.module('haikuEx.haiku')
 	return $firebaseArray.$extend({
 		// override the $createObject behavior to return a File object
     $$added: function(snap) {
-      console.log('snap:', snap.val());
       return new $haiku(snap);
     },
     $addHaiku:function(content){
