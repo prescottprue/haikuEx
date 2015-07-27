@@ -29,10 +29,9 @@ angular.module('haikuEx')
       })
       .then(function(answer) {
         $scope.alert = 'You said the information was "' + answer + '".';
-        var haiku = new Haiku(answer);
-        haiku.getExperience().then(function(newHaiku){
-          $scope.haikuList.push(newHaiku);
-        });
+        $scope.haikuList.$addHaiku(answer).then(function(){
+          console.log('$addHaiku result:', $scope.haikuList);
+        })
       }, function() {
         // $scope.alert = 'You cancelled the dialog.';
       });

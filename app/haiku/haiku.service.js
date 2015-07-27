@@ -5,8 +5,13 @@ angular.module('haikuEx.haiku')
 		if(_.isString(haikuData)){
 			this.content = haikuData;
 			console.log('new haiku:', this);
+			if(!this.lines){
+				//TODO: Check if this is working
+				this.lines = this.content.split("\n");
+			}
 		} else {
 			_.extend(this, haikuData);
+			console.log('extended this:');
 			if(this.lines){
 				this.content = this.lines.join("");
 			}
@@ -18,7 +23,7 @@ angular.module('haikuEx.haiku')
 			var d = $q.defer();
 			var self = this;
 			console.log('this:', this);
-			$http.post('/haiku', {content:this.content}).then(function (res){
+			$http.post('/haiku', {content:self.content}).then(function (res){
 				console.log('response:', res);
 				self.experience = res.data;
 				d.resolve(self);
@@ -81,7 +86,7 @@ angular.module('haikuEx.haiku')
 	return function(snap){
 		var haiku;
 		if(_.has(snap.val(), 'content')){
-			haiku = new Haiku(snap.val().content);
+			haiku = new Haiku(snap.val());
 		} else {
 			haiku = new Haiku(snap.val().lines.join("\n"));
 		}
@@ -89,21 +94,38 @@ angular.module('haikuEx.haiku')
 		return haiku;
 	};
 }])
-.factory('HaikuListFactory', ['$log', '$firebaseArray', '$haiku',  function ($log, $firebaseArray, $haiku){
+.factory('HaikuListFactory', ['$log', '$firebaseArray', '$haiku', 'Haiku', '$q', function ($log, $firebaseArray, $haiku, Haiku, $q){
 	return $firebaseArray.$extend({
 		// override the $createObject behavior to return a File object
     $$added: function(snap) {
       console.log('snap:', snap.val());
       return new $haiku(snap);
     },
-    
+    $addHaiku:function(content){
+    	console.log('addHaiku called with:', content);
+    	var d = $q.defer();
+    	var haiku = new Haiku(content);
+    	var self = this;
+      haiku.getExperience().then(function(newHaiku){
+      	console.log('getExperience was successful:', newHaiku);
+      	self.$loaded().then(function(){
+      		console.log('list reloaded');
+      		d.resolve(self);
+      	}, function(err){
+      		d.reject(err);
+      	});
+      }, function(err){
+      	d.reject(err);
+      });
+      return d.promise;
+    }
 	});
 }])
 
 //References location based on app name and returns extended firebaseArray
 .factory('HaikuList', ['fbutil', 'HaikuListFactory', function (fbutil, HaikuListFactory) {
 	return function (){
-		var ref = fbutil.ref("haikuEx");
+		var ref = fbutil.ref();
 		console.log('List factory:', ref);
   	return HaikuListFactory(ref);
 	}

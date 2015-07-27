@@ -9,7 +9,7 @@ var q = require('q'),
 request = require('request'),
 http = require('http');
 firebase = require('firebase');
-var ENV = require('../../env.json');
+// var ENV = require('../../env.json');
 
 var Firebase = require('firebase');
 var mainRef = new Firebase('https://pruvit.firebaseio.com/haikuEx');
@@ -51,8 +51,10 @@ exports.getExperience = function(req, res, next){
   		//TODO: Include sentiment
 			mainRef.push(haiku, function(err){
 				if(err){
+					console.log('error saving haiku:', err);
 					res.status(400).send('Error writing new haiku to Firebase');
 				} else {
+					console.log('new haiku saved to firebase:', haiku);
   				res.json(haiku);
 				}
 			});
@@ -76,9 +78,8 @@ Haiku.prototype = {
 			self.sentiment = sentiment;
 			console.log('getSentiment finished with self:', self);
 			self.getUrls().then(function (entitiesWithImgs){
-				self.entities = entitiesWithImgs;
 				console.log('getUrls returned:', entitiesWithImgs);
-				d.resolve(self);
+				d.resolve(entitiesWithImgs);
 			}, function (err){
 				console.error('Error getting entities:', err);
 				d.resolve(self); //Return this even if getUrls fails
@@ -143,19 +144,20 @@ Haiku.prototype = {
 		return d.promise;
 	}
 	}
+	var unirest = require('unirest');
 //Get sentiment
 function getSentiment(content){
 	var d = q.defer();
 	if(content){
-  	var reqData = {
-	    url:"https://community-sentiment.p.mashape.com/text/",
-	    headers:{"X-Mashape-Key": process.env.MASHAPE_KEY},
-	    data:"txt="+content
-		};
-		console.log('get entities request:', reqData);
-		request(reqData, function(error, response, body){
-		  console.log('getSentimentForContent response:', JSON.parse(body).response);
-		  d.resolve(JSON.parse(body).response.entities);
+		unirest.post("https://community-sentiment.p.mashape.com/text/")
+		.header("X-Mashape-Key", "l20yxiSIftmshq0a5lZYA1VRpy8yp1MrhxEjsnJdX4m4itq6Ed")
+		.send("txt=" + content)
+		.end(function (result) {
+		  console.log('getSentimentForContent response:', result.body.result);
+		  var sentiment = result.body.result;
+		  sentiment.text = sentiment.sentiment;
+		  delete sentiment.sentiment;
+		  d.resolve(sentiment);
 		});
   } else {
   	d.reject({message:'content is required to get haiku sentiment'});
