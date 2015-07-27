@@ -24,6 +24,7 @@ body {
 }
 .haiku-item {
 	z-index: 0;
+	margin-bottom:50px!important;
 }
 .haiku-line {
 	font-weight:200;
@@ -33,31 +34,36 @@ body {
 .haiku-text-box {
 	background-color:rgba(0, 0, 0,.5) !important;
 	z-index:50;
+	margin-top:40% !important;
 }
 .haiku-details{
-	margin-top:0px !important;
-	background: rgb(97, 97, 97);
-	color:rgb(255, 255, 255);
+	margin-top:100px !important;
+	/*background: rgb(97, 97, 97);*/
+	color:rgb(0, 0, 0);
+	height:100px;
+	width:100%;
 	z-index:50;
-	margin-bottom:50px;
-
 }
 .entity-image-wrapper {
 	margin-right:30px;
 	margin-left:30px;
-	filter:blur(5px);
-	-webkit-filter: blur(5px);
+	filter:blur(6px);
+	-webkit-filter: blur(6px);
 	position: absolute;
 	left:0;
 	right:0;
   z-index: 0;
   height:100%;
+
 }
 
 .entity-image {
-	height:80%;
-	margin-top:5%;
-	width:100%;
+	height:70%;
+	/*margin-top:5%;*/
+	width:85%;
+	margin-left:7.5%;
+	margin-right:7.5%;
+
 	display:inline-block;
 }
 .detail-label {
