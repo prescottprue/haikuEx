@@ -20,40 +20,211 @@ body {
 .md-whiteframe-z1,.md-whiteframe-z2 {
 	background-color:white !important;
 }
-.lower-details{
-	margin-top:0px !important;
-}
+
 .tags {
 	font-size:.8em;
 	margin-top:20px;
 }
+.haiku-item {
+	z-index: 0;
+	margin-bottom:50px!important;
+	padding-bottom:50px!important;
+
+	margin-top:50px!important;
+
+}
 .haiku-line {
 	font-weight:200;
 	font-size:1.6em;
+	color:rgb(255,255,255);
 }
+.haiku-text-box {
+	background-color:rgba(0, 0, 0,.5) !important;
+	z-index:50;
+
+	/*margin-top:40% !important;*/
+}
+.haiku-details{
+	/*margin-top:100px !important;*/
+	/*background: rgb(97, 97, 97);*/
+	color:rgb(0, 0, 0);
+	/*height:100px;*/
+	/*width:100%;*/
+	z-index:50;
+}
+
+  .haiku-media {
+		/*height:400px;*/
+		/*width:400px;*/
+		height:100%;
+		padding-top:50px;
+		min-height:400px;
+	}
+
 .entity-image-wrapper {
+
 	margin-right:30px;
 	margin-left:30px;
+	filter:blur(2px);
+	-webkit-filter: blur(2px);
+	position: absolute;
+	left:0;
+	right:0;
+  z-index: 0;
+  overflow:hidden !important;
+  height:100%;
+  width:100%;
 
 }
 .entity-image {
-	height:5em;
+		opacity:.8;
+	}
+@media screen and (min-width: 1400px) { /* Specific to this particular image */
+  .entity-image {
+	/*height:75%;*/
+	/*margin-bottom:12.5%;*/
+	/*width:75%;*/
+	/*width:100%;*/
+	max-width:700px;
+	min-width:100px;
+	max-height:400px;
+	margin-left:6%;
+	/*margin-right:12.5%;*/
+	/*display:inline-block;*/
+	height:auto;
+	width:100%;
+}
+.haiku-media {
+		padding-left:100px !important;
+	}
+}
+@media screen and (max-width: 1500px) { /* Specific to this particular image */
+  .entity-image {
+	max-width:500px;
+	max-height:100px;
+	margin-left:6%;
+	margin-top:0px !important;
+	/*margin-right:12.5%;*/
+	/*display:inline-block;*/
+	height:auto;
+	width:100%;
+}
+}
+@media screen and (max-width: 1200px) { /* Specific to this particular image */
+  .entity-image {
+		/*height:75%;*/
+		/*margin-bottom:12.5%;*/
+		/*width:75%;*/
+		/*width:100%;*/
+		max-width:500px;
+		min-height:320px;
+		margin-left:0px;
+		margin-top:15%;
+		/*display:inline-block;*/
+		height:auto;
+		width:100%;
+	}
+	.entity-image-wrapper {
+		padding-left:60px !important;
+
+	}
+	.haiku-media {
+		padding-left:120px !important;
+	}
+}
+@media screen and (max-width: 800px) { /* Specific to this particular image */
+  .entity-image {
+		/*height:75%;*/
+		/*margin-bottom:12.5%;*/
+		/*width:75%;*/
+		/*width:100%;*/
+		max-width:500px;
+		min-height:320px;
+		margin-left:1% !important;
+		margin-top:10%;
+		/*display:inline-block;*/
+		height:auto;
+		width:100%;
+	}
+	.haiku-media {
+		padding-left:50px !important;
+	}
+}
+@media screen and (max-width: 700px) { /* Specific to this particular image */
+  .entity-image {
+		/*height:75%;*/
+		/*margin-bottom:12.5%;*/
+		/*width:75%;*/
+		/*width:100%;*/
+		max-width:400px !important;
+		min-height:320px;
+		margin-left:1%;
+		margin-top:10%;
+		/*display:inline-block;*/
+		height:auto;
+		width:100%;
+	}
+}
+@media screen and (max-width: 625px) { /* Specific to this particular image */
+  .entity-image {
+		/*height:75%;*/
+		/*margin-bottom:12.5%;*/
+		/*width:75%;*/
+		/*width:100%;*/
+		max-width:350px !important;
+		min-height:320px;
+		margin-left:0px;
+		margin-top:10%;
+		/*display:inline-block;*/
+		height:auto;
+		width:100%;
+	}
+}
+@media screen and (max-width: 500px) { /* Specific to this particular image */
+  .entity-image {
+		/*height:75%;*/
+		/*margin-bottom:12.5%;*/
+		/*width:75%;*/
+		/*width:100%;*/
+		max-width:200px !important;
+		min-height:320px;
+		margin-left:0px;
+		margin-top:10%;
+		/*display:inline-block;*/
+		height:auto;
+		width:100%;
+	}
+}
+@media screen and (max-width: 375px) { /* Specific to this particular image */
+  .entity-image {
+		margin-top:10% !important;
+		max-width:280px !important;
+		min-height:320px;
+		margin-left:0px !important;
+		margin-top:10%;
+		/*display:inline-block;*/
+		height:auto;
+		width:100%;
+	}
+	.haiku-media {
+
+		padding-left:20px !important;
+
+	}
 }
 .detail-label {
-	font-size:.9em;
+	font-size:1.5em;
 	margin-bottom:0px;
+	text-decoration: underline;
+	font-weight:300;
+
 }
 .sentiment {
-	font-size:.7em;
+	font-size:1.3em;
 	font-weight:200;
 }
-.md-chips-wrap{
-	padding-bottom:0px !important;
-	margin-bottom:0px !important;
-}
+
 .md-chips {
 	box-shadow:none !important;
 	padding-bottom:0px !important;
-	width:140px!important;
-
 }
