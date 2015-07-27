@@ -7,6 +7,9 @@ angular.module('haikuEx.nav')
           console.log('Answered:', answer);
           $mdDialog.hide(answer);
         };
+        $scope.cancel = function(){
+          $mdDialog.hide();
+        };
       },
       templateUrl: './haiku/haiku-new.html',
       parent: angular.element(document.body),
