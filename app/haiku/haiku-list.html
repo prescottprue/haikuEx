@@ -1,16 +1,16 @@
 <div layout-padding layout="row" layout-align="center center">
-  <div flex="85">
+  <div flex="85" flex-sm="100">
     <md-whiteframe class="md-whiteframe-z1" layout="row" layout-align="center center">
       <div flex="100">
         <md-list >
           <md-list-item class="md-3-line haiku-item" layout="column" layout-sm="column" layout-fill  layout-align="center center" ng-repeat="haiku in haikuList" layout-padding>
-            <div layout="row" layout-md="column" layout-sm="column" layout-fill layout-padding layout-align="center center">
+            <div layout="row" layout-md="column" layout-sm="column" layout-fill layout-padding layout-align="center start">
                 <!-- Image and text -->
-              <div class="haiku-media" layout="row" flex="65" flex-md="80" flex-sm="95" layout-align="center center" layout-fill ng-style="{'background-image':'url({{haiku.entities[0].images[0]}})', 'background-size':'cover'}">
+              <div class="haiku-media" layout="row" flex="55" flex-md="80" flex-sm="95" layout-align="center center" layout-fill>
                   <!-- Image -->
-<!--                   <div class="entity-image-wrapper" layout-fill>
-                    <img class="entity-image" resize ng-style="style()" ng-src="{{haiku.entities[0].images[0]}}" alt="{{haiku.entities[0].entityId}}"/>
-                  </div> -->
+                  <div class="entity-image-wrapper" layout-fill>
+                    <img class="entity-image" ng-style="style()" ng-src="{{haiku.entities[0].images[0]}}" alt="{{haiku.entities[0].entityId}}"/>
+                  </div>
                   <!-- Text Box -->
                   <div class="md-whiteframe-z2 haiku-text-box" layout="row" layout-padding layout-align="center center">
                     <div class="md-list-item-text" layout-margin layout-align="center center" style="display:inline-block;">
