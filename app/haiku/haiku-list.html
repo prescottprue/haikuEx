@@ -3,18 +3,17 @@
     <md-whiteframe class="md-whiteframe-z1" layout="row" layout-align="center center">
       <div flex="100">
         <md-list >
-          <md-list-item class="md-3-line haiku-item" layout="column" layout-sm="column" layout-fill  layout-align="center center" ng-repeat="haiku in haikuList">
-            <div layout="row" layout-fill>
-              <div layout="column" layout-align="center center"  layout-fill flex="70">
+          <md-list-item class="md-3-line haiku-item" layout="column" layout-sm="column" layout-fill  layout-align="center center" ng-repeat="haiku in haikuList" layout-padding>
+            <div layout="row" layout-md="column" layout-sm="column" layout-fill layout-padding layout-align="center center">
                 <!-- Image and text -->
-                <div class="haiku-media" layout="row" layout-sm="column" flex="80" layout-align="center center" layout-fill>
+              <div class="haiku-media" layout="row" flex="65" flex-md="80" flex-sm="95" layout-align="center center" layout-fill ng-style="{'background-image':'url({{haiku.entities[0].images[0]}})', 'background-size':'cover'}">
                   <!-- Image -->
-                  <div class="entity-image-wrapper" layout-fill flex="100">
-                    <img class="entity-image" ng-src="{{haiku.entities[0].images[0]}}" alt="{{haiku.entities[0].entityId}}"/>
-                  </div>
+<!--                   <div class="entity-image-wrapper" layout-fill>
+                    <img class="entity-image" resize ng-style="style()" ng-src="{{haiku.entities[0].images[0]}}" alt="{{haiku.entities[0].entityId}}"/>
+                  </div> -->
                   <!-- Text Box -->
-                  <div class="md-whiteframe-z2 haiku-text-box" layout layout-padding layout-align="center center">
-                    <div class="md-list-item-text" layout-margin layout="column" layout-align="center center" style="display:inline-block;">
+                  <div class="md-whiteframe-z2 haiku-text-box" layout="row" layout-padding layout-align="center center">
+                    <div class="md-list-item-text" layout-margin layout-align="center center" style="display:inline-block;">
                       <div ng-repeat="line in haiku.lines" layout-align="center center">
                         <span class="haiku-line" >
                           {{line}}
@@ -22,22 +21,21 @@
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
-              <div layout="column" class="haiku-details" layout-padding layout-fill layout-align="center center" flex="30">
-                <div layout="column" layout-margin layout-padding layout-align="center center" >
-                    <span class="detail-label">
-                      Sentiment
-                    </span></br>
-                    <span class="sentiment">
-                      {{ haiku.sentiment.text }} -  {{ haiku.sentiment.confidence }}%
-                    </span>
+              <div layout="column" layout-md="row" layout-sm="row" class="haiku-details" layout-padding layout-fill layout-align="center center">
+                <div layout="column" layout-margin layout-padding layout-fill layout-align="center center" >
+                  <span class="detail-label">
+                    Sentiment
+                  </span></br>
+                  <span class="sentiment">
+                    {{ haiku.sentiment.text }} -  {{ haiku.sentiment.confidence }}%
+                  </span>
                 </div>
-                <div layout="column" layout-margin layout-padding flex="50" layout-align="center center">
+                <div layout="column" layout-margin layout-padding layout-fill layout-align="center center">
                   <span class="detail-label">
                     Tags
                   </span>
-                  <div layout="row" layout-margin>
+                  <div layout="row" layout-sm="column" layout-margin>
                     <md-chips ng-model="haiku.entityIds" readonly="true">
                       <md-chip-template>
                         <strong>{{$chip}}</strong>
