@@ -1,0 +1,27 @@
+<md-dialog aria-label="New Haiku">
+  <form>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>New Haiku</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="answer('not applicable')">
+        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+	<md-input-container flex layout-padding>
+    <label>Haiku Content</label>
+    <textarea ng-model="haiku.content" columns="1" md-maxlength="450"></textarea>
+  </md-input-container>
+  </md-dialog-content>
+	<div class="md-actions" layout="row">
+    <md-button ng-click="cancel()" class="md-warn">
+     Cancel
+    </md-button>
+    <md-button ng-click="create(haiku.content)" class="md-primary">
+      Create
+    </md-button>
+  </div>
+  </form>
+</md-dialog>

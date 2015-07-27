@@ -1,19 +1,25 @@
 angular.module('haikuEx.nav')
-.controller('NavCtrl', ['$rootScope', '$scope', '$state', function ($rootScope, $scope, $state){
-  $scope.logout = function () {
-    AuthService.logout().then(function () {
-      $scope.showToast("Logout Successful");
-      $state.go('home');
-    }, function (err){
-      console.error('Error logging out:', err);
-      $state.go('home');
+.controller('NavCtrl', ['$rootScope', '$scope', '$state', '$mdDialog', function ($rootScope, $scope, $state, $mdDialog){
+  $scope.showDialog = function(ev) {
+    $mdDialog.show({
+      controller: function($scope, $mdDialog){
+        $scope.create = function(answer){
+          console.log('Answered:', answer);
+          $mdDialog.hide(answer);
+        };
+      },
+      templateUrl: './haiku/haiku-new.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+    })
+    .then(function(answer) {
+      $scope.alert = 'You said the information was "' + answer + '".';
+    }, function() {
+      $scope.alert = 'You cancelled the dialog.';
     });
   };
-  $scope.clickTitle = function(){
-  	if($rootScope.currentUser){
-  		$state.go('apps');
-  	} else {
-  		$state.go('home');
-  	}
+  $scope.startNew = function(ev){
+    $scope.showDialog(ev);
+    // $state.go('haiku-new');
   }
 }])

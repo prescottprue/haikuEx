@@ -21,6 +21,12 @@ angular.module('haikuEx')
       templateUrl:'haiku/haiku-list.html',
       controller:'HaikuListCtrl'
     })
+    .state('haiku-new', {
+      parent:'nav',
+      url:'/haikus/new',
+      templateUrl:'haiku/haiku-new.html',
+      controller:'HaikuListCtrl'
+    })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/haikus');
 })
