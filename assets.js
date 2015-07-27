@@ -8,14 +8,11 @@ module.exports = {
 		'components/nav/nav.css',
 	],
 	vendor: [
-		'bower/angular/angular.js',
 		'bower/angular-animate/angular-animate.js',
 		'bower/angular-aria/angular-aria.min.js',
 		'bower/ui-router/release/angular-ui-router.min.js',
 		'bower/angular-material/angular-material.min.js',
-		'bower/underscore/underscore-min.js',
-		'bower/firebase/firebase.js',
-		'bower/angularfire/dist/angularfire.js',
+		'bower/underscore/underscore-min.js'	
 	],
 	app: [
 		'app.js',
